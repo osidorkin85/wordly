@@ -11,15 +11,15 @@ const Index: NextPage = () => {
     const textInput = useRef<HTMLTextAreaElement>(null);
 
     const [currentDate, setCurrentDate] = useState(momentToday)
-    const [savingState, setSavingState] = useState(C.STATES.notsaved)
+    const [savingState, setSavingState] = useState(C.STATES.saved)
 
     const [text, setText] = useState('')
 
     const fetchText = async (currentDate: string) => {
         const res = await fetch(`/api/text/${currentDate}`)
-        const {text, date} = await res.json()
-        console.log(text, date);
+        const {text} = await res.json()
         setText(text)
+        adjust(true)
     }
 
     const postText = async (text: string) => {
@@ -87,11 +87,12 @@ const Index: NextPage = () => {
 
     function handleChange(e: React.ChangeEvent) {
         adjust(true)
+        setSavingState(C.STATES.notsaved)
         setText(textInput?.current?.value || "")
     }
 
     function adjust(isPaste = false): void {
-        const dropMoreOn = isPaste ? 0 : 30;
+        const dropMoreOn = isPaste ? 1 : 30;
         if (null !== textInput.current) {
             const {scrollHeight, style} = textInput.current;
             const scrollLeft = window.scrollX;
@@ -112,7 +113,7 @@ const Index: NextPage = () => {
                 {C.STATES.saving === savingState && <Image width="16" height="16"
                                          src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
                                          alt='loading'/>}
-                {C.STATES.notsaved === savingState && <p style={{color: "red"}}>Изменено, но пока не сохранено</p>}
+                {C.STATES.notsaved === savingState && <p style={{color: "red"}}>Изменено, но пока не сохранено (нажмите Ctrl+S чтобы сохранить)</p>}
             </div>
 
             <form noValidate>
