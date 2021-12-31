@@ -26,12 +26,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
 
         if (req.method === "GET") {
-            res.status(200).json(
-                await prisma.text.findUnique(
+            const text = await prisma.text.findUnique(
+                {
+                    where: {createdAt: date},
+                }
+            )
+
+            if (text) {
+                res.status(200).json(text)
+            } else {
+                const text = await prisma.text.create(
                     {
-                        where: {createdAt: date},
+                        data: {
+                            createdAt: date,
+                            text: ''
+                        }
                     }
-                ))
+                )
+                res.status(200).json(text)
+            }
+
+
         }
     }
 
