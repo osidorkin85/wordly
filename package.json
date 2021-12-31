@@ -6,7 +6,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "mapdb": "npx prisma migrate dev --name init"
+    "vercel-build": "npx prisma generate && prisma migrate deploy && next build"
   },
   "dependencies": {
     "@prisma/client": "^3.7.0",
