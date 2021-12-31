@@ -1,0 +1,113 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*noinspection CssUnknownTarget*/
+body, html {
+    background:#333 url(/img/body-bg.png) repeat;
+    font-family: 'PT Sans Caption', sans-serif;
+    color: #fff;
+    height: 100%;
+}
+/*noinspection CssUnknownTarget*/
+.textarea-input {
+    overflow: hidden;
+    width: 100%;
+
+    background-attachment: local;
+    background: url(/img/lines.png) repeat-y, url(/img/paper.png) repeat;
+    color: #222;
+    background-color: #62add6;
+
+    font-size: 24px;
+    line-height: 40px;
+    padding: 50px 100px 34px;
+
+    -webkit-border-radius: 12px;
+    border-radius: 12px;
+
+    -webkit-box-shadow: 0 2px 14px #000;
+    box-shadow: 0 2px 14px #000;
+
+    border-top: 1px solid #FFF;
+    border-bottom: 1px solid #FFF;
+}
+
+.history-text {
+    font-size: 24px;
+    line-height: 40px;
+    padding: 45px 100px 34px;
+}
+
+.history-text__pre {
+    color: #ddd;
+    white-space: pre-wrap;
+}
+
+.grow-wrap {
+    display: grid;
+}
+
+.grow-wrap::after {
+    /* Note the weird space! Needed to prevent jumpy behavior */
+    content: attr(data-replicated-value) " ";
+
+    /* This is how textarea text behaves */
+    white-space: pre-wrap;
+
+    /* Hidden from view, clicks, and screen readers */
+    visibility: hidden;
+}
+
+.grow-wrap > textarea {
+    /* You could leave this, but after a user resizes, then it ruins the auto sizing */
+    resize: none;
+
+    /* Firefox shows scrollbar on growth, you can hide like this. */
+    overflow: hidden;
+}
+/*noinspection CssUnknownTarget*/
+.grow-wrap > textarea,
+.grow-wrap::after {
+    /* Identical styling required!! */
+    overflow: hidden;
+    width: 100%;
+
+    background-attachment: local;
+    background: url(/img/lines.png) repeat-y, url(/img/paper.png) repeat;
+    color: #222;
+    background-color: #62add6;
+
+    font-size: 24px;
+    line-height: 40px;
+    padding: 50px 100px 34px;
+
+    -webkit-border-radius: 12px;
+    border-radius: 12px;
+
+    -webkit-box-shadow: 0 2px 14px #000;
+    box-shadow: 0 2px 14px #000;
+
+    border-top: 1px solid #FFF;
+    border-bottom: 1px solid #FFF;
+
+
+    /* Place on top of each other */
+    grid-area: 1 / 1 / 2 / 2;
+}
+
+.textarea-toolbar__wrapper {
+    position: relative;
+}
+.textarea-toolbar__wrapper .textarea-toolbar__wordsCount {
+    position: absolute;
+    bottom: 30px;
+    left: -15px;
+}
+
+.textarea-toolbar__wrapper .textarea-toolbar__add-label-button {
+    position: absolute;
+    bottom: 62px;
+    left: -15px;
+}
+
