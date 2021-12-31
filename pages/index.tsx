@@ -117,6 +117,7 @@ const Index: NextPage = () => {
             </div>
 
             <form noValidate>
+                <div className="textarea-input__date">{momentToday.format(C.DDMMYYYYhhmm)}</div>
                 <textarea name="text" ref={textInput} defaultValue={text}
                       className="textarea-input"
                       onKeyDown={(e) => handleKeyDown(e)}
