@@ -8,6 +8,8 @@ const prisma = new PrismaClient()
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const {date} = req.query
 
+    console.log('HELLLOOOOOOO!!!!', req.query)
+
     if (date === moment().format(C.DDMMYYYY)) { // today => can save
         if (req.method === "POST") {
             res.status(200).json(
