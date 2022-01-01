@@ -3,7 +3,7 @@ import React, {RefObject, useRef, useState} from "react";
 import {C} from "../../utils/const";
 import Image from "next/image";
 
-export function WordlyEditor({
+function WordlyEditor({
                                  text,
                                  onKeyDown,
                                  textareaRef,
@@ -44,3 +44,5 @@ export function WordlyEditor({
         </form>
     </>;
 }
+
+export default WordlyEditor
