@@ -115,3 +115,25 @@ body, html {
     left: -15px;
 }
 
+.left-caret, .right-caret {
+    height: 100%;
+    position: fixed;
+    font-size: 10em;
+    vertical-align: middle;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #8888;
+}
+
+.left-caret {
+    left: 0;
+}
+
+.right-caret {
+    right: 0;
+}
+
+.left-caret:hover, .right-caret:hover {
+    background: #3338;
+}

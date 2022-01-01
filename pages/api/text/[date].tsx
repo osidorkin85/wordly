@@ -7,7 +7,6 @@ const prisma = new PrismaClient()
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const {date} = req.query
-
     if (date === moment().format(C.DDMMYYYY)) { // today => can save
         if (req.method === "POST") {
             res.status(200).json(
@@ -24,30 +23,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     }
                 ))
         }
-
-        if (req.method === "GET") {
-            const text = await prisma.text.findUnique(
-                {
-                    where: {createdAt: date},
-                }
-            )
-
-            if (text) {
-                res.status(200).json(text)
-            } else {
-                const text = await prisma.text.create(
-                    {
-                        data: {
-                            createdAt: date,
-                            text: ''
-                        }
-                    }
-                )
-                res.status(200).json(text)
-            }
-
-
-        }
     }
 
+    if (req.method === "GET") {
+        res.status(200).json(await prisma.text.upsert(
+            {
+                where: {createdAt: date},
+                update: {},
+                create: {
+                    text: '',
+                    createdAt: date
+                }
+            }
+        ))
+    }
 }
