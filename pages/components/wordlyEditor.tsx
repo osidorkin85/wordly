@@ -4,7 +4,6 @@ import {C} from "../../utils/const";
 import Image from "next/image";
 
 export function WordlyEditor({
-                                 currentDate,
                                  text,
                                  onKeyDown,
                                  textareaRef,
@@ -13,7 +12,6 @@ export function WordlyEditor({
                                  adjust
                              }: {
     savingState: string,
-    currentDate: moment.Moment,
     text: string,
     textareaRef: RefObject<HTMLTextAreaElement>,
     setSavingState: (state: string) => void,
@@ -38,7 +36,6 @@ export function WordlyEditor({
         </div>
 
         <form noValidate>
-            <div className="textarea-input__date">{currentDate.format(C.DDMMYYYYhhmm)}</div>
             <textarea name="text" ref={textareaRef} defaultValue={text}
                       className="textarea-input"
                       onKeyDown={onKeyDown}

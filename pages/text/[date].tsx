@@ -35,16 +35,13 @@ export async function getServerSideProps({params}) {
     }
 }
 
+// @ts-ignore
 const Text: NextPage = ({text}) => {
     const router = useRouter()
     const momentToday = moment()
     const todayDDMMYYYY = momentToday.format(C.DDMMYYYY)
 
     const textareaRef = useRef(null)
-
-    const currentDate = moment(router.query.date, C.DDMMYYYY)
-
-    console.log(currentDate.format(C.DDMMYYYY))
 
     const [savingState, setSavingState] = useState(C.STATES.saved)
 
@@ -80,27 +77,12 @@ const Text: NextPage = ({text}) => {
         save()
     }
 
-    function putTab(e: React.KeyboardEvent) {
-        if (e.target instanceof HTMLTextAreaElement) {
-            e.preventDefault();
-            const start = e.target.selectionStart;
-            const end = e.target.selectionEnd;
-            text = text.substring(0, start) + '\t' + text.substring(end)
-            return e.target.selectionStart = e.target.selectionEnd = start + 1;
-        }
-    }
-
     function handleKeyDown(e: React.KeyboardEvent) {
         const ctrlS = e.ctrlKey && (e.key === 's' || e.key === 'ы');
-        const tab = e.key === C.TABKEY
         if (ctrlS) {
             saveByKeys(e)
         }
-        if (tab) {
-            putTab(e)
-        }
     }
-
 
     function adjust(isPaste = false): void {
         const dropMoreOn = isPaste ? 1 : 30;
@@ -109,18 +91,22 @@ const Text: NextPage = ({text}) => {
             const scrollLeft = window.scrollX;
             const scrollTop = window.scrollY + dropMoreOn;
 
+            // @ts-ignore
             style.overflow = 'hidden';
+            // @ts-ignore
             style.height = "auto";
+            // @ts-ignore
             style.height = scrollHeight + dropMoreOn + 'px';
 
             window.scrollTo(scrollLeft, scrollTop);
         }
     }
 
-    const isBefore = currentDate.isBefore(momentToday, 'day');
-    const isToday = currentDate.isSame(momentToday, 'day');
-    const tomorrow = currentDate.add(1, 'd').format(C.DDMMYYYY);
-    const yesterday = currentDate.subtract(2, 'd').format(C.DDMMYYYY);
+    const isBefore = moment(router.query.date, C.DDMMYYYY).isBefore(momentToday, 'day');
+    const isToday = moment(router.query.date, C.DDMMYYYY).isSame(momentToday, 'day');
+    const tomorrow = moment(router.query.date, C.DDMMYYYY).add(1, 'd').format(C.DDMMYYYY);
+    const yesterday = moment(router.query.date, C.DDMMYYYY).subtract(1, 'd').format(C.DDMMYYYY);
+
     useEffect(() => {
         adjust(true)
 
@@ -130,11 +116,13 @@ const Text: NextPage = ({text}) => {
         <Link href={`/text/${yesterday}`}>
             <a className="left-caret">&lArr;</a>
         </Link>
+
+        <div className="textarea-input__date">{moment(router.query.date, C.DDMMYYYY).format(C.DDMMYYYY)}</div>
+
         {isToday &&
             <WordlyEditor
                 savingState={savingState}
                 setSavingState={setSavingState}
-                currentDate={currentDate}
                 text={text}
                 textareaRef={textareaRef}
                 adjust={adjust}
