@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from "react";
 import moment from 'moment'
 import {C} from "../../utils/const";
 import {GetStaticPaths, NextPage} from "next";
-import {WordlyEditor} from "../components/wordlyEditor";
+import WordlyEditor from "../components/wordlyEditor";
 import Router, {useRouter} from "next/router";
 import Link from "next/link";
 
