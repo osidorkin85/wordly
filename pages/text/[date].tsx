@@ -43,6 +43,8 @@ const Text: NextPage = ({text}) => {
 
     const textareaRef = useRef(null)
 
+    const currentDate = moment(router.query.date, C.DDMMYYYY)
+
     const [savingState, setSavingState] = useState(C.STATES.saved)
 
     const postText = async (text: string) => {
@@ -109,7 +111,6 @@ const Text: NextPage = ({text}) => {
 
     useEffect(() => {
         adjust(true)
-
     })
 
     return <div className="grow-wrap container">
