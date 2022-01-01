@@ -35,7 +35,7 @@ const Index: NextPage = () => {
 
     useEffect(() => {
         fetchText(currentDate.format(C.DDMMYYYY))
-    }, [currentDate])
+    }, [currentDate, fetchText])
 
     async function save() {
         if (savingState === C.STATES.notsaved) {
