@@ -68,6 +68,17 @@ const Text: NextPage = ({text}) => {
         if (ctrlS) {
             await saveByKeys(e)
         }
+
+        if (e.key === 'Tab') {
+            e.preventDefault();
+            const value = textareaRef.current!.value;
+            const selectionStart = textareaRef.current!.selectionStart;
+            const selectionEnd = textareaRef.current!.selectionEnd;
+            textareaRef.current!.value =
+                value.substring(0, selectionStart) + '  ' + value.substring(selectionEnd);
+            textareaRef.current!.selectionStart = selectionEnd + 2 - (selectionEnd - selectionStart);
+            textareaRef.current!.selectionEnd = selectionEnd + 2 - (selectionEnd - selectionStart);
+        }
     }
 
     function adjust(isPaste = false): void {
