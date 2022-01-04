@@ -1,23 +1,12 @@
 import React, {useEffect, useRef, useState} from "react";
 import moment from 'moment'
 import {C} from "../../utils/const";
-import {GetStaticPaths, NextPage} from "next";
+import {NextPage} from "next";
 import WordlyEditor from "../components/wordlyEditor";
-import Router, {useRouter} from "next/router";
+import {useRouter} from "next/router";
 import Link from "next/link";
 
 const host = process.env.NODE_ENV !== 'production' ? 'http://localhost:3000' : 'https://wordly-theta.vercel.app/'
-
-// export const getStaticPaths: GetStaticPaths<{ date: string }> = async () => {
-//
-//     return {
-//         paths: [
-//             { params: { date: moment().subtract(1, 'd').format(C.DDMMYYYY) } },
-//             { params: { date: moment().format(C.DDMMYYYY) } }
-//         ],
-//         fallback: true
-//     }
-// }
 
 // @ts-ignore
 export async function getServerSideProps({params}) {
@@ -43,26 +32,20 @@ const Text: NextPage = ({text}) => {
 
     const textareaRef = useRef(null)
 
-    const currentDate = moment(router.query.date, C.DDMMYYYY)
-
     const [savingState, setSavingState] = useState(C.STATES.saved)
-
-    const postText = async (text: string) => {
-        return await fetch(`/api/text/${todayDDMMYYYY}`, {
-            method: 'POST',
-            cache: 'no-cache',
-            headers: {
-                'Content-Type': 'text/plain'
-            },
-            body: text
-        })
-    }
 
     async function save() {
         if (savingState === C.STATES.notsaved) {
             setSavingState(C.STATES.saving)
 
-            const res = await postText(text)
+            const res = await fetch(`/api/text/${todayDDMMYYYY}`, {
+                method: 'POST',
+                cache: 'no-cache',
+                headers: {
+                    'Content-Type': 'text/plain'
+                },
+                body: text
+            })
 
             if (res.ok) {
                 setSavingState(C.STATES.saved)
@@ -72,17 +55,17 @@ const Text: NextPage = ({text}) => {
         }
     }
 
-    function saveByKeys(e: React.KeyboardEvent) {
+    async function saveByKeys(e: React.KeyboardEvent) {
         e.preventDefault()
         e.stopPropagation()
 
-        save()
+        await save()
     }
 
-    function handleKeyDown(e: React.KeyboardEvent) {
+    async function handleKeyDown(e: React.KeyboardEvent) {
         const ctrlS = e.ctrlKey && (e.key === 's' || e.key === 'ы');
         if (ctrlS) {
-            saveByKeys(e)
+            await saveByKeys(e)
         }
     }
 
