@@ -29,12 +29,11 @@ const Text: NextPage = ({text}) => {
     const router = useRouter()
     const momentToday = moment()
     const todayDDMMYYYY = momentToday.format(C.DDMMYYYY)
-
     const textareaRef = useRef() as MutableRefObject<HTMLTextAreaElement>
 
+    const [_text, setText] = useState(text)
     const [savingState, setSavingState] = useState(C.STATES.saved)
-
-    const [wordsCount, setWordsCount] = useState(text.trim().split(/[\s,.;]+/).length)
+    const [wordsCount, setWordsCount] = useState(_text.trim().split(/[\s,.;]+/).length)
 
     async function save() {
         if (savingState === C.STATES.notsaved) {
@@ -112,14 +111,15 @@ const Text: NextPage = ({text}) => {
                                 src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
                                 alt="loading"/>;
 
-    function handleChange() {
+    function handleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
         adjust(true)
         setSavingState(C.STATES.notsaved)
+        setText(e.target.value)
         updateWordsCount()
     }
 
     function updateWordsCount() {
-        setWordsCount(textareaRef.current?.value.trim().split(/[\s,.;]+/).length)
+        setWordsCount(_text.trim().split(/[\s,.;]+/).length)
     }
 
     return <div className="grow-wrap container" style={wordsCount > 1000 ? {background: "green"} : {}}>
